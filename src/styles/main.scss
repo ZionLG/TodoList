@@ -1,7 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
 $primary-color: #DB4035;
-$secondary-color: #f4f4f4;
+$secondary-color: #FAFAFA;
+$sidebar-color: #F4F4F4;
 $box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 6px 6px rgba(0, 0, 0, 0.1);
 
 * {
@@ -30,6 +31,17 @@ body {
   padding: 0;
 }
 
+main {
+  display: flex;
+  height: 100vh;
+}
+#project {
+    flex: 4 0 auto;
+}
+#sidebar {
+  background-color: $sidebar-color;
+  flex: 1 1 auto;
+}
 .material-icons {
   cursor: pointer;
   padding: 2px;
