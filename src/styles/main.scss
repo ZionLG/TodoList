@@ -8,6 +8,7 @@ $box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 6px 6px rgba(0, 0, 0, 0.1);
 * {
   box-sizing: border-box;
 }
+
 header  {
   background-color: $primary-color;
   color: $secondary-color;
@@ -20,6 +21,7 @@ header  {
   font-size: 20px;
   padding: 0.7rem 3rem;
 }
+
 body {
   background-color: $secondary-color;
   font-family: 'Roboto', sans-serif;
@@ -35,13 +37,17 @@ main {
   display: flex;
   height: 100vh;
 }
+
 #project {
-    flex: 4 0 auto;
+  flex: 4 0 auto;
 }
+
 #sidebar {
   background-color: $sidebar-color;
-  flex: 1 1 auto;
+  flex: 0 0 auto;
+  width: 300px;
 }
+
 .material-icons {
   cursor: pointer;
   padding: 2px;
@@ -52,9 +58,11 @@ main {
       184, 0.5);
   }
 }
+
 .material-icons.md-24 {
   font-size: 24px;
 }
+
 button {
   background-color: $primary-color;
   color: $secondary-color;
@@ -72,4 +80,29 @@ button {
   &:focus {
     outline: 0;
   }
+}
+
+#sidebar {
+  padding: 30px 10px 0px 30px;
+
+}
+.project {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 10px;
+  &:hover {
+    background-color: rgb(184,
+          184,
+          184, 0.5);
+  }
+}
+
+.project-count {
+  color: rgb(150,
+        150,
+        150);
+  font-size: 0.9rem;
 }

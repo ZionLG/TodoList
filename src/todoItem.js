@@ -1,9 +1,9 @@
-const todoItem = (title, description, dueDate, priority, project) => {
+const todoItem = (title, description, dueDate, priority, projectId) => {
   let _title = title;
   let _description = description;
   let _dueDate = dueDate;
   let _priority = priority;
-  let _project = project;
+  let _projectId = projectId;
 
   const getTitle = () => _title;
   const setTitle = (newTitle) => (_title = newTitle);
@@ -13,8 +13,8 @@ const todoItem = (title, description, dueDate, priority, project) => {
   const setDueDate = (newDueDate) => (_dueDate = newDueDate);
   const getPriority = () => _priority;
   const setPriority = (newPriority) => (_priority = newPriority);
-  const getProject = () => _project;
-  const setProject = (newProject) => (_project = newProject);
+  const getProjectId = () => _projectId;
+  const setProjectId = (newProjectId) => (_projectId = newProjectId);
 
   return {
     getTitle,
@@ -25,7 +25,9 @@ const todoItem = (title, description, dueDate, priority, project) => {
     setDueDate,
     getPriority,
     setPriority,
-    getProject,
-    setProject,
+    getProjectId,
+    setProjectId,
   };
 };
+
+export { todoItem };
