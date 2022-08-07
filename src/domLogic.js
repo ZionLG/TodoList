@@ -3,6 +3,7 @@ import { todoItemLogic } from "./todoItemLogic";
 
 const domLogic = (() => {
   const sidebar = document.getElementById("sidebar");
+  const projectPage = document.getElementById("project");
 
   const addProjectDOM = () => {
     const projectList = projectItemLogic.getProjects();
@@ -13,13 +14,12 @@ const domLogic = (() => {
     }
   };
 
-  const addTasksDOM = (projectName) => {
+  const _addTasksDOM = (project) => {
     const title = document.createElement("h3");
-    const projectPage = document.getElementById("project");
 
     projectPage.innerHTML = "";
 
-    title.textContent = projectName;
+    title.textContent = project.getName();
 
     projectPage.append(title);
   };
@@ -31,8 +31,17 @@ const domLogic = (() => {
 
     projectDiv.classList.add("project");
     projectCountDiv.classList.add("project-count");
+    if (project.getId() === projectItemLogic.getProjects()[0].getId()) {
+      projectDiv.classList.add("current");
+      _addTasksDOM(project);
+    }
+
+    projectDiv.addEventListener("click", (e) => {
+      _projectAddClickEvent(e, project);
+    });
 
     projectNameDiv.textContent = project.getName();
+    projectDiv.dataset.projectId = project.getId();
     projectCountDiv.textContent =
       todoItemLogic.getProjectTasks(project.getId()).length || "";
 
@@ -41,8 +50,16 @@ const domLogic = (() => {
 
     return projectDiv;
   };
+  const _projectAddClickEvent = (e, project) => {
+    Array.from(sidebar.children).forEach((element) => {
+      element.classList.remove("current");
+    });
 
-  return { addProjectDOM, addTasksDOM };
+    e.target.classList.add("current");
+    _addTasksDOM(project);
+    console.log(e.target);
+  };
+  return { addProjectDOM };
 })();
 
 export { domLogic };

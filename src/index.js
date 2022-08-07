@@ -4,6 +4,8 @@ import { projectItemLogic } from "./projectItemLogic.js";
 import { domLogic } from "./domLogic";
 function initTodo() {
   const InboxP = projectItemLogic.createProject("Inbox");
+  projectItemLogic.createProject("Today");
+
   todoItemLogic.createTask(
     "Welcome to TodoIt",
     "Get to know how to use the app",
@@ -20,7 +22,6 @@ function initTodo() {
   );
 
   domLogic.addProjectDOM();
-  domLogic.addTasksDOM("Inbox");
 }
 
 initTodo();

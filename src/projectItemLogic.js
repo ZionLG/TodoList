@@ -5,6 +5,7 @@ const projectItemLogic = (() => {
   const createProject = (projectName) => {
     const project = projectItem(projectName);
     _projects.push(project);
+
     return project;
   };
   const getProjects = () => _projects;
