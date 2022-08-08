@@ -2,6 +2,7 @@ import "./styles/main.scss";
 import { todoItemLogic } from "./todoItemLogic.js";
 import { projectItemLogic } from "./projectItemLogic.js";
 import { domLogic } from "./domLogic";
+
 function initTodo() {
   const InboxP = projectItemLogic.createProject("Inbox");
   projectItemLogic.createProject("Today");
@@ -17,7 +18,7 @@ function initTodo() {
     "Make a task!",
     "Learn how to create your very own task",
     "2023",
-    "1",
+    "2",
     InboxP.getId()
   );
 

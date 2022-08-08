@@ -116,8 +116,66 @@ button {
 h3 {
   padding: 0;
   margin: 0;
+  margin-bottom: 15px;
 }
 
 #project {
   padding: 35px 50px;
+}
+
+.task {
+  cursor: pointer;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.task-date {
+  color: $primary-color;
+  margin-left: auto;
+}
+
+.task-detail {
+  display: flex;
+  flex-direction: column;
+}
+
+.task-desc {
+  margin-top: 10px;
+  color: rgb(150,
+      150,
+      150);
+      font-size: 0.8rem;
+}
+
+hr {
+  border-color: rgb(150,
+      150,
+      150, 0.1);
+  margin: 0 0 10px 0;
+}
+
+.priority-1 {
+  border: tomato 2px solid;
+  padding: 10px;
+  border-radius: 15px;
+}
+
+.priority-2 {
+  border: orange 2px solid;
+  padding: 10px;
+  border-radius: 15px;
+}
+
+.priority-3 {
+  border: royalblue 2px solid;
+  padding: 10px;
+  border-radius: 15px;
+}
+
+.priority-4 {
+  border: lightgray 2px solid;
+  padding: 10px;
+  border-radius: 15px;
 }

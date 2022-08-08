@@ -4,6 +4,7 @@ import { todoItemLogic } from "./todoItemLogic";
 const domLogic = (() => {
   const sidebar = document.getElementById("sidebar");
   const projectPage = document.getElementById("project");
+  const addButton = document.getElementById("add");
 
   const addProjectDOM = () => {
     const projectList = projectItemLogic.getProjects();
@@ -22,6 +23,47 @@ const domLogic = (() => {
     title.textContent = project.getName();
 
     projectPage.append(title);
+
+    const projectTasks = todoItemLogic.getProjectTasks(project.getId());
+
+    projectTasks.forEach((task) => {
+      const container = document.createElement("div");
+      container.classList.add("task");
+
+      const detail = document.createElement("div");
+      detail.classList.add("task-detail");
+
+      const priority = document.createElement("div");
+      priority.classList.add("priority-" + task.getPriority());
+
+      const title = document.createElement("div");
+      const desc = document.createElement("div");
+      desc.classList.add("task-desc");
+
+      container.dataset.taskId = task.getId();
+
+      title.textContent = task.getTitle();
+
+      desc.textContent = task.getDescription();
+
+      detail.append(title);
+      detail.append(desc);
+
+      container.append(priority);
+
+      container.append(detail);
+
+      if (task.getDueDate()) {
+        const date = document.createElement("div");
+        date.textContent = task.getDueDate();
+        date.classList.add("task-date");
+
+        container.append(date);
+      }
+
+      projectPage.append(container);
+      projectPage.append(document.createElement("hr"));
+    });
   };
 
   const _createProjectNode = (project) => {
@@ -50,6 +92,7 @@ const domLogic = (() => {
 
     return projectDiv;
   };
+
   const _projectAddClickEvent = (e, project) => {
     Array.from(sidebar.children).forEach((element) => {
       element.classList.remove("current");
@@ -59,6 +102,7 @@ const domLogic = (() => {
     _addTasksDOM(project);
     console.log(e.target);
   };
+
   return { addProjectDOM };
 })();
 
