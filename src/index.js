@@ -5,7 +5,7 @@ import { domLogic } from "./domLogic";
 
 function initTodo() {
   const InboxP = projectItemLogic.createProject("Inbox");
-  projectItemLogic.createProject("Today");
+  projectItemLogic.createProject("Today", "today");
 
   todoItemLogic.createTask(
     "Welcome to TodoIt",

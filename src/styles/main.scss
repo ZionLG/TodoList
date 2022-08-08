@@ -179,3 +179,29 @@ hr {
   padding: 10px;
   border-radius: 15px;
 }
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#add-dialog {
+  border: none;
+  border-radius: 15px;
+  box-shadow: $box-shadow;
+}
+
+#cancel-task {
+  background-color: lightgrey;
+  color: #181818;
+}
+
+#task-title{
+  font-size: 19px;
+}
+
+#task-title, #task-description {
+  outline: none;
+  border: none;
+}

@@ -12,11 +12,48 @@
     <header>
       <i class="material-icons md-24">menu</i>
       <div>TodoIt</div>
-      <i id="add" class="material-icons md-24">add</i>
+      <i id="add" class="material-icons md-24">add </i>
     </header>
     <main>
       <div id="sidebar"></div>
       <div id="project"></div>
     </main>
+    <dialog id="add-dialog">
+      <form method="dialog">
+        <input
+          type="text"
+          id="task-title"
+          name="task-title"
+          placeholder="Task name"
+          required
+        />
+        <textarea
+          placeholder="Description"
+          id="task-description"
+          name="task-description"
+          cols="60"
+          rows="2"
+        ></textarea>
+
+        <label
+          >Priority:
+          <select id="priority-select" required>
+            <option value="4">Low</option>
+            <option value="3">Medium</option>
+            <option value="2">High</option>
+            <option value="1">Urgent</option>
+          </select>
+        </label>
+
+        <label
+          >Project:
+          <select id="project-select" required></select>
+        </label>
+        <div id="task-btn-container">
+          <button type="button" id="cancel-task">Cancel</button>
+          <button id="add-task">Add task</button>
+        </div>
+      </form>
+    </dialog>
   </body>
 </html>
