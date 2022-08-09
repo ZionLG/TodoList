@@ -35,20 +35,28 @@
           rows="2"
         ></textarea>
 
-        <label
-          >Priority:
-          <select id="priority-select" required>
-            <option value="4">Low</option>
-            <option value="3">Medium</option>
-            <option value="2">High</option>
-            <option value="1">Urgent</option>
-          </select>
-        </label>
+        <div id="task-pickable-values-add">
+          <label
+            >Priority:
+            <select id="priority-select" required>
+              <option value="4">Low</option>
+              <option value="3">Medium</option>
+              <option value="2">High</option>
+              <option value="1">Urgent</option>
+            </select>
+          </label>
 
-        <label
-          >Project:
-          <select id="project-select" required></select>
-        </label>
+          <label
+            >Project:
+            <select id="project-select" required></select>
+          </label>
+
+          <label
+            >Due Time:
+            <input type="date" id="add-task-date" />
+          </label>
+        </div>
+
         <div id="task-btn-container">
           <button type="button" id="cancel-task">Cancel</button>
           <button id="add-task">Add task</button>

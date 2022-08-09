@@ -126,10 +126,14 @@ const domLogic = (() => {
 
   const _addTaskFinal = (e) => {
     const prioritySelect = document.getElementById("priority-select");
+    const title = document.getElementById("task-title").value;
+    if (!title) return;
     todoItemLogic.createTask(
-      document.getElementById("task-title").value,
+      title,
       document.getElementById("task-description").value,
-      "",
+      todoItemLogic.getDateFormat(
+        document.getElementById("add-task-date").value
+      ),
       prioritySelect.options[prioritySelect.selectedIndex].value,
       projectSelect.options[projectSelect.selectedIndex].value
     );

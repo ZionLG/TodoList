@@ -205,3 +205,8 @@ form {
   outline: none;
   border: none;
 }
+
+#task-pickable-values-add {
+  display: flex;
+  justify-content: space-between;
+}
