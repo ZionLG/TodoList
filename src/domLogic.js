@@ -61,6 +61,27 @@ const domLogic = (() => {
 
       desc.textContent = task.getDescription();
 
+      editPriority.addEventListener("click", (e) => {
+        task.toggleStatus();
+        addProjectDOM(project.getId());
+
+        if (task.getStatus() === 1) {
+          editPriority.classList.add("complete");
+          title.style.textDecoration = "line-through";
+          desc.style.textDecoration = "line-through";
+        } else {
+          editPriority.classList.remove("complete");
+          title.style.textDecoration = "none";
+          desc.style.textDecoration = "none";
+        }
+      });
+
+      if (task.getStatus() === 1) {
+        editPriority.classList.add("complete");
+        title.style.textDecoration = "line-through";
+        desc.style.textDecoration = "line-through";
+      }
+
       innerContainer.append(title);
       innerContainer.append(desc);
 
@@ -149,9 +170,20 @@ const domLogic = (() => {
 
       const priority = document.createElement("div");
       priority.classList.add("priority-" + task.getPriority());
+      priority.addEventListener("click", (e) => {
+        task.toggleStatus();
+        addProjectDOM(project.getId());
+      });
 
       const title = document.createElement("div");
       const desc = document.createElement("div");
+
+      if (task.getStatus() === 1) {
+        priority.classList.add("complete");
+        title.style.textDecoration = "line-through";
+        desc.style.textDecoration = "line-through";
+      }
+
       desc.classList.add("task-desc");
 
       container.dataset.taskId = task.getId();

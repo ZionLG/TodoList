@@ -3,6 +3,7 @@
 $primary-color: #DB4035;
 $secondary-color: #FAFAFA;
 $sidebar-color: #F4F4F4;
+$task-complete-color: lightgray;
 $box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 6px 6px rgba(0, 0, 0, 0.1);
 
 * {
@@ -159,24 +160,40 @@ hr {
   border: tomato 2px solid;
   padding: 10px;
   border-radius: 15px;
+
+  &:hover {
+      background-color: $task-complete-color;
+    }
 }
 
 .priority-2 {
   border: orange 2px solid;
   padding: 10px;
   border-radius: 15px;
+
+  &:hover {
+    background-color: $task-complete-color;
+  }
 }
 
 .priority-3 {
   border: royalblue 2px solid;
   padding: 10px;
   border-radius: 15px;
+
+  &:hover {
+      background-color: $task-complete-color;
+    }
 }
 
 .priority-4 {
   border: lightgray 2px solid;
   padding: 10px;
   border-radius: 15px;
+
+  &:hover {
+      background-color: $task-complete-color;
+    }
 }
 
 form {
@@ -238,10 +255,14 @@ dialog {
   padding: 16px;
   flex: 2 1 auto;
   display: flex;
-  height: 25px;
   gap: 20px;
 }
-
+#main-edit:nth-child(1) {
+  height: 25px;
+}
+#main-edit:nth-child(1) .complete{
+  height: 25px;
+}
 
 .task-edit-title {
   font-size: 24px;
@@ -260,4 +281,12 @@ dialog {
 }
 #additional-edit>div>label {
   font-size: 15px;
+}
+
+.complete {
+  padding: 1px 4px;
+  background-color: $task-complete-color;
+  &::after {
+    content: "✓";
+  }
 }
