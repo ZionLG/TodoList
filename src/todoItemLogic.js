@@ -10,14 +10,33 @@ const todoItemLogic = (() => {
     const date = dateValue.split("-");
     if (date.length != 3 || Number(date.join("")) === "NaN") return "";
     if (date[0] == new Date().getFullYear()) {
-      return format(new Date(date[0], date[1] - 1, date[2]), "d MMM");
+      return format(new Date(date[0], date[1] - 1, date[2]), "dd MMM");
     } else {
-      return format(new Date(date[0], date[1] - 1, date[2]), "d MMM y");
+      return format(new Date(date[0], date[1] - 1, date[2]), "dd MMM y");
     }
   };
   const getTasks = () => _tasks;
+  const getTaskById = (id) => {
+    for (const task of _tasks) {
+      if (task.getId() == id) {
+        return task;
+      }
+    }
+  };
+
+  const removeTaskById = (taskId) => {
+    _tasks = _tasks.filter((task) => task.getId() != taskId);
+  };
+
   const getProjectTasks = (projectId) =>
     _tasks.filter((task) => task.getProjectId() === projectId);
-  return { createTask, getTasks, getProjectTasks, getDateFormat };
+  return {
+    createTask,
+    getTasks,
+    getProjectTasks,
+    getDateFormat,
+    getTaskById,
+    removeTaskById,
+  };
 })();
 export { todoItemLogic };

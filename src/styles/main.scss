@@ -40,12 +40,14 @@ main {
 
 #project {
   flex: 4 0 auto;
+  overflow: auto;
 }
 
 #sidebar {
   background-color: $sidebar-color;
   flex: 0 0 auto;
   width: 300px;
+    padding: 30px 10px 0px 30px;
 }
 
 .material-icons {
@@ -82,10 +84,6 @@ button {
   }
 }
 
-#sidebar {
-  padding: 30px 10px 0px 30px;
-
-}
 .project {
   cursor: pointer;
   display: flex;
@@ -125,6 +123,7 @@ h3 {
 
 .task {
   cursor: pointer;
+
   display: flex;
   gap: 15px;
   align-items: center;
@@ -186,10 +185,11 @@ form {
   gap: 10px;
 }
 
-#add-dialog {
+dialog {
   border: none;
   border-radius: 15px;
   box-shadow: $box-shadow;
+  margin-top: 100px;
 }
 
 #cancel-task {
@@ -209,4 +209,55 @@ form {
 #task-pickable-values-add {
   display: flex;
   justify-content: space-between;
+}
+
+#edit-dialog {
+  padding: 0;
+}
+#edit-header {
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 700px;
+}
+
+#edit-container {
+  display: flex;
+  min-height: 200px;
+  width: auto;
+}
+
+#additional-edit {
+  background-color: $sidebar-color;
+  flex: 1 0 auto;
+  padding: 16px;
+}
+
+#main-edit {
+  padding: 16px;
+  flex: 2 1 auto;
+  display: flex;
+  height: 25px;
+  gap: 20px;
+}
+
+
+.task-edit-title {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.task-edit-desc {
+  font-size: 14px;
+}
+
+#additional-edit > div{
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 10px;
+}
+#additional-edit>div>label {
+  font-size: 15px;
 }

@@ -6,6 +6,8 @@ import { domLogic } from "./domLogic";
 function initTodo() {
   const InboxP = projectItemLogic.createProject("Inbox");
   projectItemLogic.createProject("Today", "today");
+  const PersonalP = projectItemLogic.createProject("Personal");
+
   const today = new Date();
   const todayDate =
     today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
@@ -23,8 +25,15 @@ function initTodo() {
     "2",
     InboxP.getId()
   );
+  todoItemLogic.createTask(
+    "Clean the room",
+    "",
+    todoItemLogic.getDateFormat(todayDate),
+    "3",
+    PersonalP.getId()
+  );
 
-  domLogic.addProjectDOM();
+  domLogic.addProjectDOM(InboxP.getId());
 }
 
 initTodo();

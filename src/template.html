@@ -48,7 +48,7 @@
 
           <label
             >Project:
-            <select id="project-select" required></select>
+            <select id="project-select"></select>
           </label>
 
           <label
@@ -62,6 +62,44 @@
           <button id="add-task">Add task</button>
         </div>
       </form>
+    </dialog>
+    <dialog id="edit-dialog">
+      <div id="edit-header">
+        <div id="edit-project"></div>
+        <div>
+          <i id="edit-remove" class="material-icons md-24">delete</i>
+          <i id="edit-exit" class="material-icons md-24">close</i>
+        </div>
+      </div>
+      <div id="edit-container">
+        <div id="main-edit">
+          <div class="" id="edit-priority"></div>
+          <div id="inner-container"></div>
+        </div>
+
+        <div id="additional-edit">
+          <div>
+            <label>Project: </label>
+            <select id="project-edit-list"></select>
+          </div>
+          <hr />
+          <div>
+            <label>Due time: </label>
+            <input id="due-time-edit" type="date" />
+          </div>
+          <hr />
+          <div>
+            <label>Priority: </label>
+            <select id="priority-edit-list">
+              <option value="4">Low</option>
+              <option value="3">Medium</option>
+              <option value="2">High</option>
+              <option value="1">Urgent</option>
+            </select>
+          </div>
+          <hr />
+        </div>
+      </div>
     </dialog>
   </body>
 </html>

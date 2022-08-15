@@ -6,16 +6,125 @@ const domLogic = (() => {
   const projectPage = document.getElementById("project");
   const addButton = document.getElementById("add");
   const addTask = document.getElementById("add-task");
-  const exitDialog = document.getElementById("cancel-task");
+  const exitAddDialog = document.getElementById("cancel-task");
   const addDialog = document.getElementById("add-dialog");
   const projectSelect = document.getElementById("project-select");
+  const editDialog = document.getElementById("edit-dialog");
+  const exitEditDialog = document.getElementById("edit-exit");
+  const removeTask = document.getElementById("edit-remove");
+  const editPriorityList = document.getElementById("priority-edit-list");
+  const editPriority = document.getElementById("edit-priority");
+  const editProject = document.getElementById("edit-project");
+  const innerContainer = document.getElementById("inner-container");
+  const editProjectList = document.getElementById("project-edit-list");
+  const editDueTime = document.getElementById("due-time-edit");
 
-  const addProjectDOM = () => {
+  const _editTaskEvent = (e, project) => {
+    if (
+      typeof editDialog.showModal === "function" &&
+      !e.target.classList.contains("priority-1") &&
+      !e.target.classList.contains("priority-2") &&
+      !e.target.classList.contains("priority-3") &&
+      !e.target.classList.contains("priority-4")
+    ) {
+      editDialog.showModal();
+      let node = e.target;
+      while (!node.hasAttribute("data-task-id")) {
+        node = node.parentElement;
+      }
+
+      const task = todoItemLogic.getTaskById(String(node.dataset.taskId));
+
+      removeTask.dataset.taskId = task.getId();
+
+      editProject.textContent = project.getName();
+      editPriority.classList = node.firstElementChild.classList[0];
+      innerContainer.innerHTML = "";
+
+      const title = document.createElement("div");
+      title.classList.add("task-edit-title");
+      title.setAttribute("contenteditable", true);
+      title.addEventListener("input", (e) => {
+        task.setTitle(e.target.textContent);
+        addProjectDOM(task.getProjectId());
+      });
+
+      const desc = document.createElement("div");
+      desc.classList.add("task-edit-desc");
+      desc.setAttribute("contenteditable", true);
+      desc.addEventListener("input", (e) => {
+        task.setDescription(e.target.textContent);
+        addProjectDOM(task.getProjectId());
+      });
+
+      title.textContent = task.getTitle();
+
+      desc.textContent = task.getDescription();
+
+      innerContainer.append(title);
+      innerContainer.append(desc);
+
+      editProjectList.innerHTML = "";
+      projectItemLogic.getProjects().forEach((sProject) => {
+        if (sProject.getId() === "today") {
+          return;
+        }
+        const option = document.createElement("option");
+        option.textContent = sProject.getName();
+        option.value = sProject.getId();
+
+        if (sProject.getId() === project.getId()) {
+          option.setAttribute("selected", true);
+        }
+
+        editProjectList.append(option);
+      });
+      editProjectList.dataset.taskId = task.getId();
+
+      Array.from(editPriorityList).forEach((priority) => {
+        priority.removeAttribute("selected");
+        if (priority.value === task.getPriority()) {
+          priority.setAttribute("selected", true);
+        }
+      });
+      editPriorityList.dataset.taskId = task.getId();
+
+      const date = _getDateFromTask(task);
+      editDueTime.setAttribute("value", date);
+      editDueTime.dataset.taskId = task.getId();
+    }
+  };
+
+  const _getDateFromTask = (task) => {
+    let dateString = task.getDueDate();
+    let newDate = "";
+    let yearDate = "";
+    if (dateString.length < 7) {
+      newDate = new Date().getFullYear() + "-";
+    } else {
+      yearDate = dateString.slice(7, 11);
+    }
+
+    let dateMonth = dateString.slice(3, 6);
+    if (yearDate) {
+      newDate += yearDate + "-";
+    }
+    newDate += dateMonth + "-" + dateString.slice(0, 2);
+    let numMonth = String(new Date(Date.parse(newDate)).getMonth() + 1);
+    if (numMonth.length === 1) {
+      numMonth = "0" + numMonth;
+    }
+    newDate = newDate.replace(dateMonth, numMonth);
+
+    return newDate;
+  };
+
+  const addProjectDOM = (projectIdCurrent) => {
     const projectList = projectItemLogic.getProjects();
     sidebar.innerHTML = "";
     for (let index = 0; index < projectList.length; index++) {
       const element = projectList[index];
-      sidebar.append(_createProjectNode(element));
+      sidebar.append(_createProjectNode(element, projectIdCurrent));
     }
   };
 
@@ -33,6 +142,7 @@ const domLogic = (() => {
     projectTasks.forEach((task) => {
       const container = document.createElement("div");
       container.classList.add("task");
+      container.addEventListener("click", (e) => _editTaskEvent(e, project));
 
       const detail = document.createElement("div");
       detail.classList.add("task-detail");
@@ -70,14 +180,14 @@ const domLogic = (() => {
     });
   };
 
-  const _createProjectNode = (project) => {
+  const _createProjectNode = (project, projectIdCurrent) => {
     const projectDiv = document.createElement("div");
     const projectNameDiv = document.createElement("div");
     const projectCountDiv = document.createElement("div");
 
     projectDiv.classList.add("project");
     projectCountDiv.classList.add("project-count");
-    if (project.getId() === projectItemLogic.getProjects()[0].getId()) {
+    if (project.getId() === projectIdCurrent) {
       projectDiv.classList.add("current");
       _addTasksDOM(project);
     }
@@ -137,7 +247,7 @@ const domLogic = (() => {
       prioritySelect.options[prioritySelect.selectedIndex].value,
       projectSelect.options[projectSelect.selectedIndex].value
     );
-    addProjectDOM();
+    addProjectDOM(projectSelect.options[projectSelect.selectedIndex].value);
   };
 
   addButton.addEventListener("click", _addPostEvent);
@@ -145,8 +255,47 @@ const domLogic = (() => {
   addDialog.addEventListener("close", () => {
     addDialog.firstElementChild.reset();
   });
-  exitDialog.addEventListener("click", () => {
+  exitAddDialog.addEventListener("click", () => {
     addDialog.close();
+  });
+
+  exitEditDialog.addEventListener("click", () => {
+    editDialog.close();
+  });
+
+  removeTask.addEventListener("click", (e) => {
+    const taskId = e.target.dataset.taskId;
+    const taskProject = todoItemLogic.getTaskById(taskId).getProjectId();
+    todoItemLogic.removeTaskById(taskId);
+    editDialog.close();
+    addProjectDOM(taskProject);
+  });
+
+  editProjectList.addEventListener("change", (e) => {
+    let task = todoItemLogic.getTaskById(e.target.dataset.taskId);
+
+    let projectId = e.target.options[e.target.selectedIndex].value;
+    todoItemLogic.getTaskById(task.getId()).setProjectId(projectId);
+    editProject.textContent = projectItemLogic
+      .getProjectById(projectId)
+      .getName();
+    addProjectDOM(task.getProjectId());
+  });
+
+  editDueTime.addEventListener("change", (e) => {
+    let task = todoItemLogic.getTaskById(e.target.dataset.taskId);
+
+    let dueTime = todoItemLogic.getDateFormat(e.target.value);
+    todoItemLogic.getTaskById(task.getId()).setDueDate(dueTime);
+    addProjectDOM(task.getProjectId());
+  });
+
+  editPriorityList.addEventListener("change", (e) => {
+    let task = todoItemLogic.getTaskById(e.target.dataset.taskId);
+    task.setPriority(e.target.options[e.target.selectedIndex].value);
+    addProjectDOM(task.getProjectId());
+    editPriority.removeAttribute("class");
+    editPriority.classList.add("priority-" + task.getPriority());
   });
   return { addProjectDOM };
 })();

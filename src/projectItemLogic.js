@@ -8,8 +8,17 @@ const projectItemLogic = (() => {
 
     return project;
   };
+
+  const getProjectById = (id) => {
+    for (const project of _projects) {
+      if (project.getId() == id) {
+        return project;
+      }
+    }
+  };
+
   const getProjects = () => _projects;
-  return { createProject, getProjects };
+  return { createProject, getProjects, getProjectById };
 })();
 
 export { projectItemLogic };
