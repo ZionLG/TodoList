@@ -25,6 +25,18 @@ const domLogic = (() => {
   const editProjectList = document.getElementById("project-edit-list");
   const editDueTime = document.getElementById("due-time-edit");
 
+  const _setEditTaskDecoration = (task) => {
+    if (task.getStatus() === 1) {
+      editPriority.classList.add("complete");
+      editTitle.style.textDecoration = "line-through";
+      editDesc.style.textDecoration = "line-through";
+    } else {
+      editPriority.classList.remove("complete");
+      editTitle.style.textDecoration = "none";
+      editDesc.style.textDecoration = "none";
+    }
+  };
+
   const _editTaskEvent = (e, project) => {
     if (
       typeof editDialog.showModal === "function" &&
@@ -53,11 +65,7 @@ const domLogic = (() => {
 
       editDesc.textContent = task.getDescription();
 
-      if (task.getStatus() === 1) {
-        editPriority.classList.add("complete");
-        editTitle.style.textDecoration = "line-through";
-        editDesc.style.textDecoration = "line-through";
-      }
+      _setEditTaskDecoration(task);
 
       editProjectList.innerHTML = "";
       projectItemLogic.getProjects().forEach((sProject) => {
@@ -84,43 +92,27 @@ const domLogic = (() => {
       });
       editPriorityList.dataset.taskId = task.getId();
 
-      const date = _getDateFromTask(task);
+      const date = todoItemLogic.getDateFromTask(task);
       editDueTime.setAttribute("value", date);
       editDueTime.dataset.taskId = task.getId();
     }
   };
 
-  const _getDateFromTask = (task) => {
-    let dateString = task.getDueDate();
-    let newDate = "";
-    let yearDate = "";
-    if (dateString.length < 7) {
-      newDate = new Date().getFullYear() + "-";
-    } else {
-      yearDate = dateString.slice(7, 11);
-    }
-
-    let dateMonth = dateString.slice(3, 6);
-    if (yearDate) {
-      newDate += yearDate + "-";
-    }
-    newDate += dateMonth + "-" + dateString.slice(0, 2);
-    let numMonth = String(new Date(Date.parse(newDate)).getMonth() + 1);
-    if (numMonth.length === 1) {
-      numMonth = "0" + numMonth;
-    }
-    newDate = newDate.replace(dateMonth, numMonth);
-
-    return newDate;
-  };
-
   const addProjectDOM = (projectIdCurrent) => {
     const projectList = projectItemLogic.getProjects();
+    const addProject = document.createElement("div");
+
     sidebar.innerHTML = "";
     for (let index = 0; index < projectList.length; index++) {
       const element = projectList[index];
       sidebar.append(_createProjectNode(element, projectIdCurrent));
+      if (index === 1) {
+        sidebar.append(document.createElement("hr"));
+      }
     }
+    addProject.id = "add-project";
+    addProject.textContent = "+";
+    sidebar.append(addProject);
   };
 
   const _addTasksDOM = (project) => {
@@ -132,8 +124,26 @@ const domLogic = (() => {
 
     projectPage.append(title);
 
-    const projectTasks = todoItemLogic.getProjectTasks(project.getId());
+    if (project.getId() === "today") {
+      const overdueTitle = document.createElement("h4");
+      overdueTitle.textContent = "Overdue";
+      projectPage.append(overdueTitle);
+      const todayAndOverdueTasks = todoItemLogic.getTodayAndOverdueTasks();
+      const overdueTasks = todayAndOverdueTasks[1];
+      const todayasks = todayAndOverdueTasks[0];
+      _addTasksFromProject(overdueTasks);
 
+      const todayTitle = document.createElement("h4");
+      todayTitle.textContent = "Today";
+      projectPage.append(todayTitle);
+      _addTasksFromProject(todayasks, project);
+    } else {
+      const projectTasks = todoItemLogic.getProjectTasks(project.getId());
+
+      _addTasksFromProject(projectTasks, project);
+    }
+  };
+  const _addTasksFromProject = (projectTasks, project) => {
     projectTasks.forEach((task) => {
       const container = document.createElement("div");
       container.classList.add("task");
@@ -184,7 +194,6 @@ const domLogic = (() => {
       projectPage.append(document.createElement("hr"));
     });
   };
-
   const _createProjectNode = (project, projectIdCurrent) => {
     const projectDiv = document.createElement("div");
     const projectNameDiv = document.createElement("div");
@@ -203,8 +212,14 @@ const domLogic = (() => {
 
     projectNameDiv.textContent = project.getName();
     projectDiv.dataset.projectId = project.getId();
-    projectCountDiv.textContent =
-      todoItemLogic.getProjectTasks(project.getId()).length || "";
+    if (project.getId() === "today") {
+      const tasksArray = todoItemLogic.getTodayAndOverdueTasks();
+      projectCountDiv.textContent =
+        tasksArray[0].length + tasksArray[1].length || "";
+    } else {
+      projectCountDiv.textContent =
+        todoItemLogic.getProjectTasks(project.getId()).length || "";
+    }
 
     projectDiv.append(projectNameDiv);
     projectDiv.append(projectCountDiv);
@@ -216,10 +231,14 @@ const domLogic = (() => {
     Array.from(sidebar.children).forEach((element) => {
       element.classList.remove("current");
     });
+    let node = e.target;
+    while (!node.hasAttribute("data-project-id")) {
+      node = node.parentElement;
+    }
 
-    e.target.classList.add("current");
+    node.classList.add("current");
     _addTasksDOM(project);
-    console.log(e.target);
+    console.log(node);
   };
 
   const _addPostEvent = (e) => {
@@ -320,15 +339,7 @@ const domLogic = (() => {
 
     task.toggleStatus();
     console.log("\n" + task.getTitle() + " " + task.getStatus());
-    if (task.getStatus() === 1) {
-      editPriority.classList.add("complete");
-      editTitle.style.textDecoration = "line-through";
-      editDesc.style.textDecoration = "line-through";
-    } else {
-      editPriority.classList.remove("complete");
-      editTitle.style.textDecoration = "none";
-      editDesc.style.textDecoration = "none";
-    }
+    _setEditTaskDecoration(task);
     addProjectDOM(task.getProjectId());
   });
   return { addProjectDOM };

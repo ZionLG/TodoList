@@ -8,9 +8,7 @@ function initTodo() {
   projectItemLogic.createProject("Today", "today");
   const PersonalP = projectItemLogic.createProject("Personal");
 
-  const today = new Date();
-  const todayDate =
-    today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+  const todayDate = todoItemLogic.getTodayFormat();
   todoItemLogic.createTask(
     "Welcome to TodoIt",
     "Get to know how to use the app",

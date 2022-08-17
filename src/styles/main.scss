@@ -291,3 +291,16 @@ dialog {
     content: "✓";
   }
 }
+
+#add-project {
+  width: fit-content;
+  font-size: 25px;
+  padding: 5px 15px;
+  border-radius: 10px;
+  
+  &:hover {
+    background-color: rgb(184,
+          184,
+          184, 0.5);
+  }
+}
