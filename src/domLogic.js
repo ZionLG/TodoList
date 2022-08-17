@@ -5,17 +5,23 @@ const domLogic = (() => {
   const sidebar = document.getElementById("sidebar");
   const projectPage = document.getElementById("project");
   const addButton = document.getElementById("add");
+
   const addTask = document.getElementById("add-task");
-  const exitAddDialog = document.getElementById("cancel-task");
-  const addDialog = document.getElementById("add-dialog");
-  const projectSelect = document.getElementById("project-select");
+  const exitAddTaskDialog = document.getElementById("cancel-task");
+  const addTaskDialog = document.getElementById("add-dialog");
+  const addTaskprojectSelect = document.getElementById("project-select");
+  const addTaskprioritySelect = document.getElementById("priority-select");
+  const addTaskDate = document.getElementById("add-task-date");
+
   const editDialog = document.getElementById("edit-dialog");
   const exitEditDialog = document.getElementById("edit-exit");
   const removeTask = document.getElementById("edit-remove");
   const editPriorityList = document.getElementById("priority-edit-list");
   const editPriority = document.getElementById("edit-priority");
   const editProject = document.getElementById("edit-project");
-  const innerContainer = document.getElementById("inner-container");
+  const editTitle = document.getElementById("task-edit-title");
+  const editDesc = document.getElementById("task-edit-desc");
+
   const editProjectList = document.getElementById("project-edit-list");
   const editDueTime = document.getElementById("due-time-edit");
 
@@ -36,54 +42,22 @@ const domLogic = (() => {
       const task = todoItemLogic.getTaskById(String(node.dataset.taskId));
 
       removeTask.dataset.taskId = task.getId();
+      editTitle.dataset.taskId = task.getId();
+      editDesc.dataset.taskId = task.getId();
+      editPriority.dataset.taskId = task.getId();
 
       editProject.textContent = project.getName();
       editPriority.classList = node.firstElementChild.classList[0];
-      innerContainer.innerHTML = "";
 
-      const title = document.createElement("div");
-      title.classList.add("task-edit-title");
-      title.setAttribute("contenteditable", true);
-      title.addEventListener("input", (e) => {
-        task.setTitle(e.target.textContent);
-        addProjectDOM(task.getProjectId());
-      });
+      editTitle.textContent = task.getTitle();
 
-      const desc = document.createElement("div");
-      desc.classList.add("task-edit-desc");
-      desc.setAttribute("contenteditable", true);
-      desc.addEventListener("input", (e) => {
-        task.setDescription(e.target.textContent);
-        addProjectDOM(task.getProjectId());
-      });
-
-      title.textContent = task.getTitle();
-
-      desc.textContent = task.getDescription();
-
-      editPriority.addEventListener("click", (e) => {
-        task.toggleStatus();
-        addProjectDOM(project.getId());
-
-        if (task.getStatus() === 1) {
-          editPriority.classList.add("complete");
-          title.style.textDecoration = "line-through";
-          desc.style.textDecoration = "line-through";
-        } else {
-          editPriority.classList.remove("complete");
-          title.style.textDecoration = "none";
-          desc.style.textDecoration = "none";
-        }
-      });
+      editDesc.textContent = task.getDescription();
 
       if (task.getStatus() === 1) {
         editPriority.classList.add("complete");
-        title.style.textDecoration = "line-through";
-        desc.style.textDecoration = "line-through";
+        editTitle.style.textDecoration = "line-through";
+        editDesc.style.textDecoration = "line-through";
       }
-
-      innerContainer.append(title);
-      innerContainer.append(desc);
 
       editProjectList.innerHTML = "";
       projectItemLogic.getProjects().forEach((sProject) => {
@@ -177,7 +151,6 @@ const domLogic = (() => {
 
       const title = document.createElement("div");
       const desc = document.createElement("div");
-
       if (task.getStatus() === 1) {
         priority.classList.add("complete");
         title.style.textDecoration = "line-through";
@@ -250,9 +223,9 @@ const domLogic = (() => {
   };
 
   const _addPostEvent = (e) => {
-    if (typeof addDialog.showModal === "function") {
-      addDialog.showModal();
-      projectSelect.innerHTML = "";
+    if (typeof addTaskDialog.showModal === "function") {
+      addTaskDialog.showModal();
+      addTaskprojectSelect.innerHTML = "";
       projectItemLogic.getProjects().forEach((project) => {
         if (project.getId() === "today") {
           return;
@@ -261,34 +234,34 @@ const domLogic = (() => {
         option.textContent = project.getName();
         option.value = project.getId();
 
-        projectSelect.append(option);
+        addTaskprojectSelect.append(option);
       });
     }
   };
 
   const _addTaskFinal = (e) => {
-    const prioritySelect = document.getElementById("priority-select");
     const title = document.getElementById("task-title").value;
     if (!title) return;
     todoItemLogic.createTask(
       title,
       document.getElementById("task-description").value,
-      todoItemLogic.getDateFormat(
-        document.getElementById("add-task-date").value
-      ),
-      prioritySelect.options[prioritySelect.selectedIndex].value,
-      projectSelect.options[projectSelect.selectedIndex].value
+      todoItemLogic.getDateFormat(addTaskDate.value),
+      addTaskprioritySelect.options[addTaskprioritySelect.selectedIndex].value,
+      addTaskprojectSelect.options[addTaskprojectSelect.selectedIndex].value
     );
-    addProjectDOM(projectSelect.options[projectSelect.selectedIndex].value);
+    addProjectDOM(
+      addTaskprojectSelect.options[addTaskprojectSelect.selectedIndex].value
+    );
   };
 
   addButton.addEventListener("click", _addPostEvent);
   addTask.addEventListener("click", _addTaskFinal);
-  addDialog.addEventListener("close", () => {
-    addDialog.firstElementChild.reset();
+  addTaskDialog.addEventListener("close", () => {
+    addTaskDialog.firstElementChild.reset();
   });
-  exitAddDialog.addEventListener("click", () => {
-    addDialog.close();
+
+  exitAddTaskDialog.addEventListener("click", () => {
+    addTaskDialog.close();
   });
 
   exitEditDialog.addEventListener("click", () => {
@@ -328,6 +301,35 @@ const domLogic = (() => {
     addProjectDOM(task.getProjectId());
     editPriority.removeAttribute("class");
     editPriority.classList.add("priority-" + task.getPriority());
+  });
+
+  editTitle.addEventListener("input", (e) => {
+    const task = todoItemLogic.getTaskById(e.target.dataset.taskId);
+    task.setTitle(e.target.textContent);
+    addProjectDOM(task.getProjectId());
+  });
+
+  editDesc.addEventListener("input", (e) => {
+    const task = todoItemLogic.getTaskById(e.target.dataset.taskId);
+    task.setDescription(e.target.textContent);
+    addProjectDOM(task.getProjectId());
+  });
+
+  editPriority.addEventListener("click", (e) => {
+    const task = todoItemLogic.getTaskById(e.target.dataset.taskId);
+
+    task.toggleStatus();
+    console.log("\n" + task.getTitle() + " " + task.getStatus());
+    if (task.getStatus() === 1) {
+      editPriority.classList.add("complete");
+      editTitle.style.textDecoration = "line-through";
+      editDesc.style.textDecoration = "line-through";
+    } else {
+      editPriority.classList.remove("complete");
+      editTitle.style.textDecoration = "none";
+      editDesc.style.textDecoration = "none";
+    }
+    addProjectDOM(task.getProjectId());
   });
   return { addProjectDOM };
 })();

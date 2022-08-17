@@ -260,16 +260,17 @@ dialog {
 #main-edit:nth-child(1) {
   height: 25px;
 }
+
 #main-edit:nth-child(1) .complete{
   height: 25px;
 }
 
-.task-edit-title {
+#task-edit-title {
   font-size: 24px;
   margin-bottom: 10px;
 }
 
-.task-edit-desc {
+#task-edit-desc {
   font-size: 14px;
 }
 
