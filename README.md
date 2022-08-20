@@ -1,7 +1,7 @@
 
 # TodoIt
 
-TodoIt is a custom made Todo-Lis application inspired by Todoist
+TodoIt is a custom made Todo-Lis application inspired by Todoist made with Webpack, Javascript, HTML, and Sass
 
 
 ## Features
