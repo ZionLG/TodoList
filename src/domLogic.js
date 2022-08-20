@@ -100,7 +100,6 @@ const domLogic = (() => {
 
   const addProjectDOM = (projectIdCurrent) => {
     const projectList = projectItemLogic.getProjects();
-    const addProject = document.createElement("div");
 
     sidebar.innerHTML = "";
     for (let index = 0; index < projectList.length; index++) {
@@ -110,9 +109,68 @@ const domLogic = (() => {
         sidebar.append(document.createElement("hr"));
       }
     }
+
+    sidebar.append(_createAddProjectDiv());
+  };
+
+  const _createAddProjectDiv = () => {
+    const addProject = document.createElement("div");
+    addProject.addEventListener("click", _addProjectEventClick);
     addProject.id = "add-project";
     addProject.textContent = "+";
-    sidebar.append(addProject);
+    return addProject;
+  };
+
+  const _addProjectEventClick = (e) => {
+    e.target.style.display = "none";
+    _createProjectContainer();
+  };
+
+  const _createProjectContainer = () => {
+    const inputContainer = document.createElement("div");
+    inputContainer.id = "input-project-container";
+
+    sidebar.append(inputContainer);
+    inputContainer.append(_createProjectInfoInput());
+    inputContainer.append(_createAddProjectButton());
+    inputContainer.append(_createRevertProjectButton());
+  };
+
+  const _createProjectInfoInput = () => {
+    const projectNameInput = document.createElement("input");
+    projectNameInput.id = "input-project";
+    return projectNameInput;
+  };
+
+  const _createAddProjectButton = () => {
+    const addProjectBtn = document.createElement("div");
+    addProjectBtn.addEventListener("click", _createProjectEventClick);
+    addProjectBtn.classList.add("project-create-option");
+    addProjectBtn.textContent = "✔";
+    return addProjectBtn;
+  };
+
+  const _createProjectEventClick = (e) => {
+    e.target.parentElement.style.display = "none";
+
+    addProjectDOM(
+      projectItemLogic
+        .createProject(e.target.parentElement.firstElementChild.value)
+        .getId()
+    );
+  };
+
+  const _createRevertProjectButton = () => {
+    const revertProject = document.createElement("div");
+    revertProject.addEventListener("click", _revertProjectEventClick);
+    revertProject.classList.add("project-create-option");
+    revertProject.textContent = "x";
+    return revertProject;
+  };
+
+  const _revertProjectEventClick = (e) => {
+    e.target.parentElement.style.display = "none";
+    addProjectDOM();
   };
 
   const _addTasksDOM = (project) => {
@@ -143,6 +201,7 @@ const domLogic = (() => {
       _addTasksFromProject(projectTasks, project);
     }
   };
+
   const _addTasksFromProject = (projectTasks, project) => {
     projectTasks.forEach((task) => {
       const container = document.createElement("div");

@@ -201,6 +201,21 @@ form {
   flex-direction: column;
   gap: 10px;
 }
+form > div {
+  display: flex;
+  gap: 20px;
+}
+form > div > div:nth-child(1) {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+
+form>div>div:nth-child(2) {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+}
 
 dialog {
   border: none;
@@ -303,4 +318,27 @@ dialog {
           184,
           184, 0.5);
   }
+}
+.project-create-option {
+  font-size: 30px;
+  width: 35px;
+  text-align: center;
+  border-radius: 10px;
+  &:hover {
+      background-color: rgb(184,
+          184,
+          184, 0.5);
+    }
+}
+#input-project-container {
+  margin-top: 10px;
+  display: flex;
+  gap: 5px;
+  padding: 5px 15px;
+}
+
+#input-project {
+  padding: 0 5px; 
+    width: 150px;
+  border-radius: 5px;
 }

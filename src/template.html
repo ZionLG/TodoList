@@ -20,41 +20,45 @@
     </main>
     <dialog id="add-dialog">
       <form method="dialog">
-        <input
-          type="text"
-          id="task-title"
-          name="task-title"
-          placeholder="Task name"
-          required
-        />
-        <textarea
-          placeholder="Description"
-          id="task-description"
-          name="task-description"
-          cols="60"
-          rows="2"
-        ></textarea>
+        <div>
+          <div>
+            <input
+              type="text"
+              id="task-title"
+              name="task-title"
+              placeholder="Task name"
+              required
+            />
+            <textarea
+              placeholder="Description"
+              id="task-description"
+              name="task-description"
+              cols="60"
+              rows="5"
+            ></textarea>
+          </div>
 
-        <div id="task-pickable-values-add">
-          <label
-            >Priority:
-            <select id="priority-select" required>
-              <option value="4">Low</option>
-              <option value="3">Medium</option>
-              <option value="2">High</option>
-              <option value="1">Urgent</option>
-            </select>
-          </label>
+          <div id="task-pickable-values-add">
+            <label
+              >Priority:
+              <select id="priority-select" required>
+                <option value="4">Low</option>
+                <option value="3">Medium</option>
+                <option value="2">High</option>
+                <option value="1">Urgent</option>
+              </select>
+            </label>
 
-          <label
-            >Project:
-            <select id="project-select"></select>
-          </label>
+            <label
+              >Project:
+              <select id="project-select"></select>
+            </label>
 
-          <label
-            >Due Time:
-            <input type="date" id="add-task-date" />
-          </label>
+            <label
+              >Due Time:
+              <input type="date" id="add-task-date" />
+            </label>
+          </div>
         </div>
 
         <div id="task-btn-container">
