@@ -5,6 +5,7 @@ const domLogic = (() => {
   const sidebar = document.getElementById("sidebar");
   const projectPage = document.getElementById("project");
   const addButton = document.getElementById("add");
+  const hideButton = document.getElementById("hide");
 
   const addTask = document.getElementById("add-task");
   const exitAddTaskDialog = document.getElementById("cancel-task");
@@ -273,7 +274,6 @@ const domLogic = (() => {
     projectDiv.classList.add("project");
     projectCountDiv.classList.add("project-count");
     if (project.getId() === projectIdCurrent) {
-      console.log(projectIdCurrent);
       projectDiv.classList.add("current");
       _addTasksDOM(project);
     }
@@ -308,10 +308,11 @@ const domLogic = (() => {
   };
 
   const _deleteProjectEvent = (e) => {
-    projectItemLogic.removeProjectById(
-      e.target.parentElement.parentElement.dataset.projectId
-    );
-    console.log(sidebar.firstChild.dataset.projectId);
+    const deletedProjectId =
+      e.target.parentElement.parentElement.dataset.projectId;
+    projectItemLogic.removeProjectById(deletedProjectId);
+    todoItemLogic.removeTaskByProject(deletedProjectId);
+
     addProjectDOM(String(sidebar.firstChild.dataset.projectId));
   };
 
@@ -364,6 +365,14 @@ const domLogic = (() => {
   };
 
   addButton.addEventListener("click", _addPostEvent);
+  hideButton.addEventListener("click", () => {
+    if (sidebar.style.display === "none") {
+      sidebar.style.display = "block";
+    } else {
+      sidebar.style.display = "none";
+    }
+  });
+
   addTask.addEventListener("click", _addTaskFinal);
   addTaskDialog.addEventListener("close", () => {
     addTaskDialog.firstElementChild.reset();

@@ -93,7 +93,9 @@ const todoItemLogic = (() => {
   const removeTaskById = (taskId) => {
     _tasks = _tasks.filter((task) => task.getId() != taskId);
   };
-
+  const removeTaskByProject = (projectId) => {
+    _tasks = _tasks.filter((task) => task.getProjectId() != projectId);
+  };
   const getProjectTasks = (projectId) =>
     _tasks.filter((task) => task.getProjectId() === projectId);
   return {
@@ -106,6 +108,7 @@ const todoItemLogic = (() => {
     getTodayAndOverdueTasks,
     getDateFromTask,
     getTodayFormat,
+    removeTaskByProject,
   };
 })();
 export { todoItemLogic };
