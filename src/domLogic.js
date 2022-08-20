@@ -257,10 +257,23 @@ const domLogic = (() => {
     const projectDiv = document.createElement("div");
     const projectNameDiv = document.createElement("div");
     const projectCountDiv = document.createElement("div");
+    const countAndDeleteContainer = document.createElement("div");
+    const projectDeleteDiv = document.createElement("i");
+
+    const isUserProject =
+      project.getId() != projectItemLogic.getProjects()[0].getId() &&
+      project.getId() != projectItemLogic.getProjects()[1].getId();
+    if (isUserProject) {
+      projectDeleteDiv.classList.add("material-icons");
+      projectDeleteDiv.classList.add("md-24");
+      projectDeleteDiv.textContent = "delete";
+      countAndDeleteContainer.id = "count-delete-project-container";
+    }
 
     projectDiv.classList.add("project");
     projectCountDiv.classList.add("project-count");
     if (project.getId() === projectIdCurrent) {
+      console.log(projectIdCurrent);
       projectDiv.classList.add("current");
       _addTasksDOM(project);
     }
@@ -281,23 +294,41 @@ const domLogic = (() => {
     }
 
     projectDiv.append(projectNameDiv);
-    projectDiv.append(projectCountDiv);
+
+    if (isUserProject) {
+      projectDiv.append(countAndDeleteContainer);
+      countAndDeleteContainer.append(projectCountDiv);
+      countAndDeleteContainer.append(projectDeleteDiv);
+      projectDeleteDiv.addEventListener("click", _deleteProjectEvent);
+    } else {
+      projectDiv.append(projectCountDiv);
+    }
 
     return projectDiv;
   };
 
-  const _projectAddClickEvent = (e, project) => {
-    Array.from(sidebar.children).forEach((element) => {
-      element.classList.remove("current");
-    });
-    let node = e.target;
-    while (!node.hasAttribute("data-project-id")) {
-      node = node.parentElement;
-    }
+  const _deleteProjectEvent = (e) => {
+    projectItemLogic.removeProjectById(
+      e.target.parentElement.parentElement.dataset.projectId
+    );
+    console.log(sidebar.firstChild.dataset.projectId);
+    addProjectDOM(String(sidebar.firstChild.dataset.projectId));
+  };
 
-    node.classList.add("current");
-    _addTasksDOM(project);
-    console.log(node);
+  const _projectAddClickEvent = (e, project) => {
+    if (e.target.textContent != "delete") {
+      Array.from(sidebar.children).forEach((element) => {
+        element.classList.remove("current");
+      });
+      let node = e.target;
+      while (!node.hasAttribute("data-project-id")) {
+        node = node.parentElement;
+      }
+
+      node.classList.add("current");
+      _addTasksDOM(project);
+      console.log(node);
+    }
   };
 
   const _addPostEvent = (e) => {

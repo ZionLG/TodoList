@@ -342,3 +342,9 @@ dialog {
     width: 150px;
   border-radius: 5px;
 }
+
+#count-delete-project-container{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

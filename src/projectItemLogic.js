@@ -16,9 +16,11 @@ const projectItemLogic = (() => {
       }
     }
   };
-
+  const removeProjectById = (projectId) => {
+    _projects = _projects.filter((project) => project.getId() != projectId);
+  };
   const getProjects = () => _projects;
-  return { createProject, getProjects, getProjectById };
+  return { createProject, getProjects, getProjectById, removeProjectById };
 })();
 
 export { projectItemLogic };
